@@ -51,6 +51,24 @@ template "/etc/tgt/targets.conf" do
 end
 
 case node["cinder"]["storage"]["provider"] 
+  when "rbd"
+    template "/etc/nova/virsh-secret.xml" do
+      source "virsh-secret.xml.erb"
+      owner "nova"
+      group "nova"
+      mode 00600
+    end
+    ruby_block 'load-virsh-keys' do
+      block do
+        if not system "virsh secret-list | grep -i #{node["cinder"]["libvirt"]["secret-uuid"]}" then
+          %x[ ADMIN_KEY=`ceph --name mon. --keyring /etc/ceph/ceph.mon.keyring auth get-or-create-key client.#{node["cinder"]["storage"]["rbd"]["rbd_user"]}`
+              virsh secret-define --file /etc/nova/virsh-secret.xml
+              virsh secret-set-value --secret #{node["cinder"]["libvirt"]["secret-uuid"]} \
+                --base64 "$ADMIN_KEY"
+            ]
+        end
+      end
+    end
   when "emc"
     d = node["cinder"]["storage"]["emc"]
     keys = %w[StorageType EcomServerIP EcomServerPort EcomUserName EcomPassword]

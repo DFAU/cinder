@@ -26,6 +26,10 @@ default["cinder"]["storage"]["lvm"]["volume_group"] = "cinder-volumes"     # nam
 default["cinder"]["storage"]["lvm"]["volume_clear"] = "zero"               # none, zero, shred
 default["cinder"]["storage"]["lvm"]["pool_size"] = "None"                  # Size of thin provisioning pool
 
+default["cinder"]["storage"]["rbd"]["rbd_pool"] = "volumes"
+default["cinder"]["storage"]["rbd"]["rbd_user"] = "volumes"
+default["cinder"]["storage"]["rbd"]["rbd_secret_uuid"] = ""
+
 # solidfire settings - set these if you are using solidfire
 # as the storage provider above
 default["cinder"]["storage"]["solidfire"]["mvip"] = ""        # Solidfire MVIP address
@@ -64,6 +68,8 @@ default["cinder"]["storage"]["netapp"]["nfsdirect"]["export"] = ""
 # your environment in the same way you define management/nova etc networks
 default["cinder"]["services"]["volume"]["network"] = "management"                 # node_attribute
 
+default["cinder"]["libvirt"]["secret-uuid"] = ""
+
 # LOGGING LEVEL
 # in order of verbosity (most to least)
 # DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -101,5 +107,6 @@ when "debian"
     "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
   default["cinder"]["storage"]["emc"]["packages"] = ["python-pywbem"]
+  default["cinder"]["storage"]["rbc"]["packages"] = ["python-ceph"]
   default["cinder"]["storage"]["netapp"]["nfsdirect"]["packages"] = ["nfs-common", "sysfsutils"]
 end
