@@ -3,12 +3,14 @@ action :create do
 
   platform_options = node["cinder"]["platform"]
 
-  # Search for rabbitmq endpoint info
+  # Search for required endpoints
   rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
-  # Search for mysql endpoint info
   mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
+  glance_api = get_access_endpoint("glance-api", "glance", "api")
   cinder_api = get_bind_endpoint("cinder", "api")
+
   cinder_volume_network = node["cinder"]["services"]["volume"]["network"]
+
 
   # Set iscsi address
   iscsi_ip_address = node["cinder"]["storage"]["iscsi"]["ip_address"]
@@ -68,7 +70,6 @@ action :create do
     msg = "#{storage_provider}, is not currently supported by these cookbooks. Please change the storage provider attribute in your environment to one of lvm, emc, solidfire, netappiscsi, netappnfsdirect."
     Chef::Application.fatal! msg
   end
-  
   if node["cinder"]["storage"]["backends"].any?
     storage_backend_options = {}
     node["cinder"]["storage"]["backends"].each do |backend_key,backend_options|
@@ -93,7 +94,8 @@ action :create do
         "max_gigabytes" => node["cinder"]["config"]["max_gigabytes"],
         "enabled_backends" => enabled_backends,
         "storage_backend_options" => storage_backend_options,
-        "iscsi_ip_address" => iscsi_ip_address
+        "iscsi_ip_address" => iscsi_ip_address,
+        "glance_host" => glance_api["host"]
       )
     end
   else
@@ -114,7 +116,8 @@ action :create do
         "storage_availability_zone" => node["cinder"]["config"]["storage_availability_zone"],
         "max_gigabytes" => node["cinder"]["config"]["max_gigabytes"],
         "storage_options" => storage_options,
-        "iscsi_ip_address" => iscsi_ip_address
+        "iscsi_ip_address" => iscsi_ip_address,
+        "glance_host" => glance_api["host"]
       )
     end
   end
