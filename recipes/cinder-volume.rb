@@ -61,7 +61,9 @@ case node["cinder"]["storage"]["provider"]
     ruby_block 'load-virsh-keys' do
       block do
         if not system "virsh secret-list | grep -i #{node["cinder"]["libvirt"]["secret-uuid"]}" then
-          %x[ ADMIN_KEY=`ceph --name mon. --keyring /etc/ceph/ceph.mon.keyring auth get-or-create-key client.#{node["cinder"]["storage"]["rbd"]["rbd_user"]}`
+          %x[ ceph auth get-or-create client.volumes > /etc/ceph/ceph.client.#{node["cinder"]["storage"]["rbd"]["rbd_user"]}.keyring
+              chown cinder:cinder /etc/ceph/ceph.client.#{node["cinder"]["storage"]["rbd"]["rbd_user"]}.keyring
+              ADMIN_KEY=`ceph auth get-or-create-key client.#{node["cinder"]["storage"]["rbd"]["rbd_user"]}`
               virsh secret-define --file /etc/nova/virsh-secret.xml
               virsh secret-set-value --secret #{node["cinder"]["libvirt"]["secret-uuid"]} \
                 --base64 "$ADMIN_KEY"
