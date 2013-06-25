@@ -15,9 +15,19 @@ iscsi_ip_address = <%= @iscsi_ip_address %>
 storage_availability_zone = <%= @storage_availability_zone %>
 max_gigabytes = <%= @max_gigabytes %>
 notification_driver=cinder.openstack.common.notifier.rpc_notifier
+<% if defined? @enabled_backends and not @enabled_backends.nil?%>
+enabled_backends = <%= @enabled_backends %>
+<% end %>
 
 #### STORAGE PROVIDER INFORMATION ####
-<%= render "partials/storage-options.partial.erb" %>
+<% if defined? @storage_backend_options and not @storage_backend_options.nil?%>
+<% @storage_backend_options.each do |key,storage_options| %>
+[<%=key%>]
+<%= render "partials/storage-options.partial.erb", :storage_options => storage_options %>
+<% end %>
+<% else %>
+<%= render "partials/storage-options.partial.erb", :storage_options => @storage_options %>
+<% end %>
 
 [keystone_authtoken]
 signing_dirname = /tmp/keystone-signing-cinder

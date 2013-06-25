@@ -8,6 +8,7 @@ default["developer_mode"] = false  # we want secure passwords by default    # cl
 default["cinder"]["storage"]["provider"] = "lvm"
 default["cinder"]["storage"]["iscsi"]["ip_address"] = nil
 default["cinder"]["storage"]["enable_multipath"] = false                    # if using emc set to true to enable multi-path
+default["cinder"]["storage"]["backends"] = {}
 
 default["cinder"]["db"]["name"] = "cinder"                                      # node_attribute
 default["cinder"]["db"]["username"] = "cinder"                                  # node_attribute
@@ -28,7 +29,6 @@ default["cinder"]["storage"]["lvm"]["pool_size"] = "None"                  # Siz
 
 default["cinder"]["storage"]["rbd"]["rbd_pool"] = "volumes"
 default["cinder"]["storage"]["rbd"]["rbd_user"] = "volumes"
-default["cinder"]["storage"]["rbd"]["rbd_secret_uuid"] = ""
 
 # solidfire settings - set these if you are using solidfire
 # as the storage provider above
