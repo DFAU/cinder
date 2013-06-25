@@ -95,6 +95,7 @@ action :create do
         "storage_backend_options" => storage_backend_options,
         "iscsi_ip_address" => iscsi_ip_address
       )
+    end
   else
     t = template "/etc/cinder/cinder.conf" do
       source "cinder.conf.erb"
@@ -115,7 +116,7 @@ action :create do
         "storage_options" => storage_options,
         "iscsi_ip_address" => iscsi_ip_address
       )
-  end
+    end
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)
 end
