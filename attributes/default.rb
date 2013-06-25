@@ -76,6 +76,9 @@ default["cinder"]["libvirt"]["secret-uuid"] = ""
 default["cinder"]["config"]["log_verbosity"] = "INFO"                       # node_attributes
 default["cinder"]["config"]["storage_availability_zone"] = "nova"                       # node_attributes
 default["cinder"]["config"]["max_gigabytes"] = "10000"                      # node_attributes
+default["cinder"]["config"]["volume_name_template"] = "volume-%s" 
+default["cinder"]["config"]["snapshot_name_template"] = "snapshot-%s" 
+default["cinder"]["config"]["backup_name_template"] = "backup-%s" 
 
 case platform_family
 when "rhel"
