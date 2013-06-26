@@ -15,6 +15,7 @@ iscsi_ip_address = <%= @iscsi_ip_address %>
 storage_availability_zone = <%= @storage_availability_zone %>
 max_gigabytes = <%= @max_gigabytes %>
 glance_host = <%= @glance_host %>
+glance_api_version = <%= node["cinder"]["config"]["glance_api_version"] %>
 notification_driver=cinder.openstack.common.notifier.rpc_notifier
 volume_name_template=<%= node["cinder"]["config"]["volume_name_template"] %>
 snapshot_name_template=<%= node["cinder"]["config"]["snapshot_name_template"] %>

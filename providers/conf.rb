@@ -32,7 +32,6 @@ action :create do
   case storage_provider
   when "rbd"
     storage_options["volume_driver"] = "cinder.volume.drivers.rbd.RBDDriver"
-    storage_options["glance_api_version"] = 2
     storage_options["rbd_pool"] = node["cinder"]["storage"][storage_provider]["rbd_pool"]
     storage_options["rbd_user"] = node["cinder"]["storage"][storage_provider]["rbd_user"]
     storage_options["rbd_secret_uuid"] = node["cinder"]["libvirt"]["secret-uuid"]

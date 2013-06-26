@@ -75,6 +75,7 @@ case node["cinder"]["storage"]["provider"]
       not_if "test -f /etc/ceph/ceph.client.#{node["cinder"]["storage"]["rbd"]["rbd_user"]}.keyring"
       notifies :restart, "service[cinder-volume]", :delayed
     end
+    # This does not belong here, refactor into own recipe
     bash 'load-virsh-keys' do
       user "root"
       code <<-EOH

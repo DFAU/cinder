@@ -79,6 +79,7 @@ default["cinder"]["config"]["max_gigabytes"] = "10000"                      # no
 default["cinder"]["config"]["volume_name_template"] = "volume-%s" 
 default["cinder"]["config"]["snapshot_name_template"] = "snapshot-%s" 
 default["cinder"]["config"]["backup_name_template"] = "backup-%s" 
+default["cinder"]["config"]["glance_api_version"] = 2
 
 case platform_family
 when "rhel"
